@@ -1,8 +1,11 @@
 import Phaser from "phaser";
-import logoImg from "./assets/logo.png";
+import logoImg from "./assets/ship.png";
+
+// TODO: switch to Phaser.AUTO below. The VM I'm using for development doesn't
+// like WebGL.
 
 const config = {
-  type: Phaser.AUTO,
+  type: Phaser.CANVAS,
   parent: "phaser-example",
   width: 800,
   height: 600,
