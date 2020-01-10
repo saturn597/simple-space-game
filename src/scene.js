@@ -2,12 +2,15 @@ import Phaser from 'phaser';
 
 import Config from './config';
 import Player from './player';
+
+import bulletImage from './assets/bullet.png';
 import shipImage from './assets/ship.png';
 
 export default class Scene extends Phaser.Scene {
 
     preload() {
         this.load.image('ship', shipImage);
+        this.load.image('bullet', bulletImage);
     }
 
     create() {
@@ -25,7 +28,7 @@ export default class Scene extends Phaser.Scene {
         // Mark upper edge of game area so we know when a bullet goes past it.
         // Could also do this using the global collideWorldBounds event.
         this.upperEdge = this.physics.add.existing(
-            this.add.rectangle(0, -0.5, worldBounds.width, 1).setOrigin(0),
+            this.add.rectangle(0, -10, worldBounds.width, 10).setOrigin(0),
             true);  // true makes it a static body
 
         this.player = new Player(this, playerBounds);

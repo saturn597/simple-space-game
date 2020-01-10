@@ -14,9 +14,10 @@ export default class Player {
         this.sprite.body.setBoundsRectangle(bounds);
 
         this.bullets = scene.physics.add.group({
-            velocityY: -Config.bulletVelocity
+            defaultKey: 'bullet',
+            maxSize: Config.bulletMax,
+            velocityY: -Config.bulletVelocity,
         });
-        this.bullets.maxSize = Config.bulletMax;
 
         scene.physics.add.collider(
             this.bullets,
@@ -32,7 +33,6 @@ export default class Player {
         const bullet = this.bullets.create(
             this.sprite.x,
             this.sprite.body.top,
-            'ship'
         );
     }
 
