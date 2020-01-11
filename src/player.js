@@ -13,24 +13,12 @@ export default class Player {
             setDrag(200);
         this.sprite.body.setBoundsRectangle(bounds);
 
-        this.bullets = scene.physics.add.group({
-            defaultKey: 'bullet',
-            maxSize: Config.bulletMax,
-            velocityY: -Config.bulletVelocity,
-        });
-
-        scene.physics.add.collider(
-            this.bullets,
-            scene.upperEdge,
-            ((e, b) => this.bullets.remove(b, true, true))
-        );
-
         this.cursors = scene.input.keyboard.createCursorKeys();
         scene.input.keyboard.on('keydown-SPACE', this.shoot, this);
     }
 
     shoot() {
-        const bullet = this.bullets.create(
+        const bullet = this.scene.bullets.create(
             this.sprite.x,
             this.sprite.body.top,
         );
