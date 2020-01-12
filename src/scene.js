@@ -7,6 +7,27 @@ import Player from './player';
 import bulletImage from './assets/bullet.png';
 import shipImage from './assets/ship.png';
 
+
+const level = [
+    {
+        config: {
+            x: 50,
+            speed: 100,
+        },
+        time: 1,
+        type: BaddyA,
+    },
+
+    {
+        config: {
+            x: 200,
+            speed: 400,
+        },
+        time: 7.4,
+        type: BaddyA,
+    },
+];
+
 export default class Scene extends Phaser.Scene {
 
     preload() {
@@ -63,14 +84,20 @@ export default class Scene extends Phaser.Scene {
             })
         );
 
-        const baddyConfig = {
-            x: 50,
-            speed: 100,
-        };
-
-        const b = this.baddies.add(new BaddyA(this, baddyConfig));
+        this.processLevel(level);
 
         this.player = new Player(this, playerBounds);
+    }
+
+    processLevel(level) {
+        for (const baddy of level) {
+            const cb = () =>
+                this.baddies.add(new baddy.type(this, baddy.config));
+            this.time.addEvent({
+                callback: cb,
+                delay: baddy.time * 1000,
+            });
+        }
     }
 
     update() {
