@@ -1,34 +1,22 @@
 import Phaser from 'phaser';
 
-import BaddyA from './baddyA';
 import Config from './config';
 import Player from './player';
 
 import bulletImage from './assets/bullet.png';
 import shipImage from './assets/ship.png';
 
-
-const level = [
-    {
-        config: {
-            x: 50,
-            speed: 100,
-        },
-        time: 1,
-        type: BaddyA,
-    },
-
-    {
-        config: {
-            x: 200,
-            speed: 400,
-        },
-        time: 7.4,
-        type: BaddyA,
-    },
-];
-
 export default class Scene extends Phaser.Scene {
+
+    constructor(level) {
+        super({
+            key: 'gameScene',
+        });
+    }
+
+    init(data) {
+        this.level = data;
+    }
 
     preload() {
         this.load.image('ship', shipImage);
@@ -84,13 +72,13 @@ export default class Scene extends Phaser.Scene {
             })
         );
 
-        this.processLevel(level);
+        this.setupLevel();
 
         this.player = new Player(this, playerBounds);
     }
 
-    processLevel(level) {
-        for (const baddy of level) {
+    setupLevel() {
+        for (const baddy of this.level) {
             const cb = () =>
                 this.baddies.add(new baddy.type(this, baddy.config));
             this.time.addEvent({

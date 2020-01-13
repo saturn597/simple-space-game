@@ -1,12 +1,10 @@
 import Phaser from 'phaser';
 
 import Scene from './scene';
-
-// TODO: switch to Phaser.AUTO below. The VM I'm using for development doesn't
-// like WebGL.
+import TitleScene from './titlescene';
 
 const config = {
-    type: Phaser.CANVAS,
+    type: Phaser.AUTO,
     parent: 'game',
     physics: {
         default: 'arcade',
@@ -16,7 +14,7 @@ const config = {
     },
     width: 360,
     height: 640,
-    scene: Scene,
+    scene: [TitleScene, Scene],
 };
 
 const game = new Phaser.Game(config);
