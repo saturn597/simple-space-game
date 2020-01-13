@@ -6,7 +6,7 @@ import Player from './player';
 import bulletImage from './assets/bullet.png';
 import shipImage from './assets/ship.png';
 
-export default class Scene extends Phaser.Scene {
+export default class GameScene extends Phaser.Scene {
 
     constructor(level) {
         super({

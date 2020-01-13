@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import Config from './config';
 
-export default class BaddyA extends Phaser.Physics.Arcade.Sprite {
+export default class BasicBaddy extends Phaser.Physics.Arcade.Sprite {
 
     constructor(scene, config) {
         super(scene, config.x, 0, 'ship');

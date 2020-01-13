@@ -1,4 +1,4 @@
-import BaddyA from './baddyA';
+import BasicBaddy from './basicBaddy';
 
 const level1 = [
 
@@ -8,7 +8,7 @@ const level1 = [
             speed: 100,
         },
         time: 1,
-        type: BaddyA,
+        type: BasicBaddy,
     },
 
     {
@@ -17,7 +17,7 @@ const level1 = [
             speed: 400,
         },
         time: 7.4,
-        type: BaddyA,
+        type: BasicBaddy,
     },
 
 ];
