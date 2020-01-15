@@ -1,7 +1,5 @@
 import Phaser from 'phaser';
 
-import Config from './config';
-
 export default class BasicBaddy extends Phaser.Physics.Arcade.Sprite {
 
     constructor(scene, config) {
@@ -22,5 +20,4 @@ export default class BasicBaddy extends Phaser.Physics.Arcade.Sprite {
             this.destroy();
         }
     }
-
 }
