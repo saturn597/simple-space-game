@@ -1,3 +1,4 @@
+import ApproachBaddy from './approachBaddy';
 import BasicBaddy from './basicBaddy';
 import SweepBaddy from './sweepBaddy';
 
@@ -5,13 +6,13 @@ const level1 = [
 
     {
         config: {
+            acceleration: 500,
+            maxSpeed: 200,
+            speed: 0,
             x: 180,
-            speed: 400,
-            step: 100,
-            initialRight: true,
         },
         time: 1,
-        type: SweepBaddy,
+        type: ApproachBaddy,
     },
 
     {
