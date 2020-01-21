@@ -5,6 +5,7 @@ export default class ApproachBaddy extends BasicBaddy {
     constructor(scene, config) {
         super(scene, config);
         this.config = config;
+        this.name = 'ApproachBaddy';
     }
 
     update() {

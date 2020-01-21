@@ -14,6 +14,9 @@ const level1 = [
         time: 1,
         type: ApproachBaddy,
     },
+];
+
+const level2 = [
 
     {
         config: {
@@ -49,4 +52,4 @@ const level1 = [
 
 ];
 
-export default [level1];
+export default [level1, level2];

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import Config from './config';
+import levels from './levels';
 import Player from './player';
 
 import bulletImage from './assets/bullet.png';
@@ -15,7 +16,8 @@ export default class GameScene extends Phaser.Scene {
     }
 
     init(data) {
-        this.level = data;
+        this.levelNumber = data.nextLevelNumber;
+        this.level = levels[this.levelNumber];
     }
 
     preload() {
@@ -77,13 +79,40 @@ export default class GameScene extends Phaser.Scene {
         this.player = new Player(this, playerBounds);
     }
 
+    endLevel() {
+        const levelsLeft = levels.length - this.levelNumber - 1;
+        const nextScene = levelsLeft ? 'levelEndScene' : 'endScene';
+        const startNextScene = () => {
+            this.scene.start(
+                nextScene,
+                { nextLevelNumber: this.levelNumber + 1 }
+            );
+        };
+
+        this.time.addEvent({
+            delay: 1000,
+            callback: startNextScene,
+        });
+    }
+
     setupLevel() {
-        for (const baddy of this.level) {
-            const cb = () =>
-                this.baddies.add(new baddy.type(this, baddy.config));
+        let baddiesLeft = this.level.length;
+
+        for (const item of this.level) {
+            const addBaddy = () => {
+                const newBaddy = new item.type(this, item.config);
+                this.baddies.add(newBaddy);
+                newBaddy.on('destroy', () => {
+                    baddiesLeft--;
+                    if (baddiesLeft === 0) {
+                        this.endLevel();
+                    }
+                });
+            };
+
             this.time.addEvent({
-                callback: cb,
-                delay: baddy.time * 1000,
+                callback: addBaddy,
+                delay: item.time * 1000,
             });
         }
     }

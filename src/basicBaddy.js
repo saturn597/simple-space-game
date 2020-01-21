@@ -12,11 +12,13 @@ export default class BasicBaddy extends Phaser.Physics.Arcade.Sprite {
 
         this.flipY = true;
         this.setVelocityY(config.speed);
+
+        this.name = 'BasicBaddy';
     }
 
     update() {
         if (this.body.top > this.scene.physics.world.bounds.bottom) {
-            // This should remove us from our group automatically.
+            // NB: calling destroy removes us from our group automatically.
             this.destroy();
         }
     }

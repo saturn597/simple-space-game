@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-export default class PathBaddy extends Phaser.GameObjects.PathFollower {
+export default class SweepBaddy extends Phaser.GameObjects.PathFollower {
     constructor(scene, config) {
         const path = new Phaser.Curves.Path(config.x, 0);
         super(scene, path, config.x, 0, 'ship');
@@ -23,7 +23,9 @@ export default class PathBaddy extends Phaser.GameObjects.PathFollower {
 
         this.startFollow({
             duration: 1000 * path.getLength() / config.speed,
-            onComplete: () => this.destroy,
+            onComplete: () => this.destroy(),
         });
+
+        this.name = 'Sweep Baddy';
     }
 }
