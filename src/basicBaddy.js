@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 export default class BasicBaddy extends Phaser.Physics.Arcade.Sprite {
 
     constructor(scene, config) {
+        config.y = config.y || 0;
         super(scene, config.x, 0, 'ship');
 
         this.setOrigin(0.5, 1);
@@ -18,6 +19,7 @@ export default class BasicBaddy extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         if (this.body.top > this.scene.physics.world.bounds.bottom) {
+            this.emit('escape');
             // NB: calling destroy removes us from our group automatically.
             this.destroy();
         }

@@ -18,6 +18,7 @@ export default class GameScene extends Phaser.Scene {
     init(data) {
         this.levelNumber = data.nextLevelNumber;
         this.level = levels[this.levelNumber];
+        this.shields = data.shields;
     }
 
     preload() {
@@ -59,33 +60,55 @@ export default class GameScene extends Phaser.Scene {
         // run the update methods of baddies during updates
         this.baddies.runChildUpdate = true;
 
-        this.physics.add.collider(
+        this.player = new Player(this, playerBounds);
+
+        this.physics.add.overlap(
+            this.player.sprite,
+            this.baddies,
+            (playerSprite, baddySprite) => {
+                baddySprite.destroy();
+                this.shields--;
+                this.events.emit('setShields', this.shields);
+            }
+        );
+
+        this.physics.add.overlap(
             this.bullets,
-            this.upperEdge,
-            ((e, b) => this.bullets.remove(b, true, true))
+            this.baddies,
+            (bullet, baddy) => {
+                this.baddies.remove(baddy, true, true);
+                this.bullets.remove(bullet, true, true);
+            }
         );
 
         this.physics.add.collider(
             this.bullets,
-            this.baddies,
-            ((bullet, baddy) => {
-                this.baddies.remove(baddy, true, true);
-                this.bullets.remove(bullet, true, true);
-            })
+            this.upperEdge,
+            (e, b) => this.bullets.remove(b, true, true)
         );
 
         this.setupLevel();
 
-        this.player = new Player(this, playerBounds);
+        this.events.emit('setEnemies', this.level.length);
+        this.events.emit('setLevel', this.levelNumber + 1);
+        this.events.emit('setShields', this.shields);
+
     }
 
     endLevel() {
         const levelsLeft = levels.length - this.levelNumber - 1;
+
+        const nextLevelNumber = levelsLeft ? this.levelNumber + 1 : 0;
         const nextScene = levelsLeft ? 'levelEndScene' : 'endScene';
+        const shields = levelsLeft ? this.shields : 0;
+
         const startNextScene = () => {
             this.scene.start(
                 nextScene,
-                { nextLevelNumber: this.levelNumber + 1 }
+                {
+                    nextLevelNumber,
+                    shields,
+                }
             );
         };
 
@@ -102,8 +125,13 @@ export default class GameScene extends Phaser.Scene {
             const addBaddy = () => {
                 const newBaddy = new item.type(this, item.config);
                 this.baddies.add(newBaddy);
+                newBaddy.on('escape', () => {
+                    this.shields--;
+                    this.events.emit('setShields', this.shields);
+                });
                 newBaddy.on('destroy', () => {
                     baddiesLeft--;
+                    this.events.emit('setEnemies', baddiesLeft);
                     if (baddiesLeft === 0) {
                         this.endLevel();
                     }

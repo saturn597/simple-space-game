@@ -23,7 +23,10 @@ export default class SweepBaddy extends Phaser.GameObjects.PathFollower {
 
         this.startFollow({
             duration: 1000 * path.getLength() / config.speed,
-            onComplete: () => this.destroy(),
+            onComplete: () => {
+                this.emit('escape');
+                this.destroy();
+            },
         });
 
         this.name = 'Sweep Baddy';

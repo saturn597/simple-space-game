@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import GameScene from './gameScene';
+import HudScene from './hudScene';
 import StarScene from './starScene';
 import { EndScene, LevelEndScene, TitleScene } from './textScenes';
 
@@ -15,7 +16,7 @@ const config = {
     },
     width: 360,
     height: 640,
-    scene: [TitleScene, StarScene, GameScene, LevelEndScene, EndScene,],
+    scene: [TitleScene, HudScene, StarScene, GameScene, LevelEndScene, EndScene,],
 };
 
 const game = new Phaser.Game(config);

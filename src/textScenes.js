@@ -7,8 +7,14 @@ class BaseScene extends Phaser.Scene {
         });
     }
 
+    init(data) {
+        this.shields = data.shields || 3;
+        this.nextLevelNumber = data.nextLevelNumber || 0;
+    }
+
     create() {
         const cam = this.cameras.main;
+
         this.textObj = this.add.text(
             cam.width / 2,
             cam.height / 2,
@@ -19,12 +25,22 @@ class BaseScene extends Phaser.Scene {
             }
         ).setOrigin(0.5);
 
+        this.setup();
+        this.events.on('wake', this.setup, this);
+    }
+
+    setup() {
+        this.textObj.text = this.text;
+
         const callback = () => {
             this.textObj.text = this.text2;
             this.input.keyboard.once('keyup_SPACE', () => {
                 this.scene.start(
                     this.nextScene,
-                    { nextLevelNumber: this.nextLevelNumber }
+                    {
+                        nextLevelNumber: this.nextLevelNumber,
+                        shields: this.shields,
+                    }
                 );
             });
         };
@@ -52,10 +68,6 @@ class LevelEndScene extends BaseScene {
         this.text2 = 'Space for next level';
         this.nextScene = 'gameScene';
     }
-
-    init(data) {
-        this.nextLevelNumber = data.nextLevelNumber;
-    }
 }
 
 class TitleScene extends BaseScene {
@@ -64,7 +76,6 @@ class TitleScene extends BaseScene {
         this.text = 'Space Game';
         this.text2 = 'Space to start';
         this.nextScene = 'gameScene';
-        this.nextLevelNumber = 0;
     }
 }
 
