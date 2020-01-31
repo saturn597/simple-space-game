@@ -67,6 +67,7 @@ export default class GameScene extends Phaser.Scene {
             this.baddies,
             (playerSprite, baddySprite) => {
                 baddySprite.destroy();
+                this.player.hit();
                 this.shields--;
                 this.events.emit('setShields', this.shields);
             }
