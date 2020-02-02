@@ -9,4 +9,10 @@ export default {
     minStarSize: 1,
     maxStarSize: 3,
     numStars: 150,
+
+    flashDuration: 50,
+    shieldDuration: 250,
+
+    levelCompletionDelay: 1000,
+    lossDelay: 0,
 };

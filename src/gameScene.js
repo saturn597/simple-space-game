@@ -19,6 +19,7 @@ export default class GameScene extends Phaser.Scene {
         this.levelNumber = data.nextLevelNumber;
         this.level = levels[this.levelNumber];
         this.shields = data.shields;
+        this.ending = false;
     }
 
     preload() {
@@ -37,6 +38,13 @@ export default class GameScene extends Phaser.Scene {
             worldBounds.height,
         );
         playerBounds.top = playerBounds.height * (Config.playerWorldFraction);
+
+        this.graphics = this.add.graphics();
+        this.graphics.alpha = 0;
+        this.graphics.clear();
+        this.graphics.lineStyle(1, 0xffffff, 1);
+        this.graphics.fillStyle(0xffffff, 1);
+        this.graphics.fillRect(0, 0, worldBounds.width, worldBounds.height);
 
         // Mark upper edge of game area so we know when a bullet goes past it.
         // Could also do this using the global collideWorldBounds event.
@@ -67,9 +75,7 @@ export default class GameScene extends Phaser.Scene {
             this.baddies,
             (playerSprite, baddySprite) => {
                 baddySprite.destroy();
-                this.player.hit();
-                this.shields--;
-                this.events.emit('setShields', this.shields);
+                this.damagePlayer();
             }
         );
 
@@ -96,14 +102,45 @@ export default class GameScene extends Phaser.Scene {
 
     }
 
-    endLevel() {
-        const levelsLeft = levels.length - this.levelNumber - 1;
+    damagePlayer() {
+        this.flash();
+        this.player.hit();
+        this.shields--;
+        if (this.shields < 0) {
+            this.shields = 0;
+        }
+        this.events.emit('setShields', this.shields);
 
+        if (this.shields <= 0) {
+            this.endLevel();
+        }
+    }
+
+    endLevel() {
+        if (this.ending) {
+            // The end of the scene could be triggered by more than one thing
+            // at the same time. For example, the last baddy is destroyed by
+            // colliding with the player, simultaneously reducing shields to 0.
+            // Avoid letting our callback get called more than once.
+            return;
+        }
+        this.ending = true;
+
+        const levelsLeft = levels.length - this.levelNumber - 1;
         const nextLevelNumber = levelsLeft ? this.levelNumber + 1 : 0;
-        const nextScene = levelsLeft ? 'levelEndScene' : 'endScene';
-        const shields = levelsLeft ? this.shields : 0;
+
+        let delay, nextScene;
+        if (this.shields <= 0) {
+            delay = Config.lossDelay;
+            nextScene = 'gameOverScene';
+        } else {
+            delay = Config.levelCompletionDelay;
+            nextScene = levelsLeft ? 'levelEndScene' : 'endScene';
+        }
 
         const startNextScene = () => {
+            const shields = levelsLeft ? this.shields : 0;
+
             this.scene.start(
                 nextScene,
                 {
@@ -114,8 +151,17 @@ export default class GameScene extends Phaser.Scene {
         };
 
         this.time.addEvent({
-            delay: 1000,
+            delay,
             callback: startNextScene,
+        });
+    }
+
+    flash() {
+        this.graphics.alpha = 1;
+        this.tweens.add({
+            targets: this.graphics,
+            alpha: 0,
+            duration: Config.flashDuration,
         });
     }
 
@@ -127,8 +173,7 @@ export default class GameScene extends Phaser.Scene {
                 const newBaddy = new item.type(this, item.config);
                 this.baddies.add(newBaddy);
                 newBaddy.on('escape', () => {
-                    this.shields--;
-                    this.events.emit('setShields', this.shields);
+                    this.damagePlayer();
                 });
                 newBaddy.on('destroy', () => {
                     baddiesLeft--;

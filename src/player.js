@@ -24,7 +24,7 @@ export default class Player {
         this.scene.tweens.add({
             targets: this,
             alpha: 0,
-            duration: 1000,
+            duration: Config.shieldDuration,
         });
     }
 

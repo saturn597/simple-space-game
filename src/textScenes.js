@@ -79,8 +79,18 @@ class TitleScene extends BaseScene {
     }
 }
 
+class GameOverScene extends BaseScene {
+    constructor() {
+        super('gameOverScene');
+        this.text = 'Game over!';
+        this.text2 = 'Space to continue';
+        this.nextScene = 'titleScene';
+    }
+}
+
 export {
     EndScene,
+    GameOverScene,
     LevelEndScene,
     TitleScene,
 };
