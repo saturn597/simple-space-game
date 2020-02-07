@@ -1,23 +1,26 @@
 import Phaser from 'phaser';
 
 import Config from './config';
-import levels from './levels';
+import generateLevel from './levelGenerator';
 import Player from './player';
 
 import bulletImage from './assets/bullet.png';
 import shipImage from './assets/ship.png';
 
+
 export default class GameScene extends Phaser.Scene {
 
-    constructor(level) {
+    constructor() {
         super({
             key: 'gameScene',
         });
+
+        this.levels = [generateLevel(0)];
     }
 
     init(data) {
         this.levelNumber = data.nextLevelNumber;
-        this.level = levels[this.levelNumber];
+        this.level = this.levels[this.levelNumber];
         this.shields = data.shields;
         this.ending = false;
     }
@@ -126,7 +129,7 @@ export default class GameScene extends Phaser.Scene {
         }
         this.ending = true;
 
-        const levelsLeft = levels.length - this.levelNumber - 1;
+        const levelsLeft = this.levels.length - this.levelNumber - 1;
         const nextLevelNumber = levelsLeft ? this.levelNumber + 1 : 0;
 
         let delay, nextScene;
@@ -186,7 +189,7 @@ export default class GameScene extends Phaser.Scene {
 
             this.time.addEvent({
                 callback: addBaddy,
-                delay: item.time * 1000,
+                delay: item.time,
             });
         }
     }

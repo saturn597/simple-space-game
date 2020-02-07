@@ -1,9 +1,11 @@
 export default {
     bulletMax: 3,
     bulletVelocity: 750,
+
     playerAccel: 400,
     playerWorldFraction: 3/5,
     playerDrag: 200,
+
     maxStarSpeed: 20,
     minStarSpeed: 10,
     minStarSize: 1,
@@ -15,4 +17,7 @@ export default {
 
     levelCompletionDelay: 1000,
     lossDelay: 0,
+
+    gameWidth: 360,
+    gameHeight: 640,
 };

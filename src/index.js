@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import Config from './config';
 import GameScene from './gameScene';
 import HudScene from './hudScene';
 import StarScene from './starScene';
@@ -20,8 +21,8 @@ const config = {
             gravity: { y: 0, },
         },
     },
-    width: 360,
-    height: 640,
+    width: Config.gameWidth,
+    height: Config.gameHeight,
     scene: [
         TitleScene,
         HudScene,

@@ -11,7 +11,7 @@ export default class SweepBaddy extends Phaser.GameObjects.PathFollower {
 
         const bounds = scene.physics.world.bounds;
         const max = bounds.bottom + this.height + config.step;
-        let rightSide = config.initialRight;
+        let rightSide = config.fromRight;
         for (let y = config.step; y < max; y += config.step) {
             if (rightSide) {
                 path.lineTo(bounds.right, y);
@@ -30,5 +30,15 @@ export default class SweepBaddy extends Phaser.GameObjects.PathFollower {
         });
 
         this.name = 'Sweep Baddy';
+    }
+
+    static randomConfig(bounds) {
+        const rnd = Phaser.Math.RND;
+        return {
+            fromRight: rnd.pick([true, false]),
+            speed: rnd.integerInRange(bounds.minSpeed, bounds.maxSpeed),
+            step: rnd.integerInRange(bounds.minStep, bounds.maxStep),
+            x: rnd.integerInRange(bounds.minX, bounds.maxX),
+        };
     }
 }
