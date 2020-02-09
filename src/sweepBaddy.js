@@ -6,20 +6,23 @@ export default class SweepBaddy extends Phaser.GameObjects.PathFollower {
         super(scene, path, config.x, 0, 'ship');
 
         this.setOrigin(0.5, 1);
+        this.flipY = false;
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
         const bounds = scene.physics.world.bounds;
         const max = bounds.bottom + this.height + config.step;
+        const points = [];
         let rightSide = config.fromRight;
         for (let y = config.step; y < max; y += config.step) {
             if (rightSide) {
-                path.lineTo(bounds.right, y);
+                points.push(new Phaser.Math.Vector2(bounds.right, y));
             } else {
-                path.lineTo(bounds.left, y);
+                points.push(new Phaser.Math.Vector2(bounds.left, y));
             }
             rightSide = !rightSide;
         }
+        path.splineTo(points);
 
         this.startFollow({
             duration: 1000 * path.getLength() / config.speed,
@@ -27,6 +30,8 @@ export default class SweepBaddy extends Phaser.GameObjects.PathFollower {
                 this.emit('escape');
                 this.destroy();
             },
+            rotationOffset: 90,
+            rotateToPath: true,
         });
 
         this.name = 'Sweep Baddy';

@@ -15,11 +15,11 @@ const level1 = {
     ],
 
     // Number of baddies in level
-    count: 20,
+    count: 100,
 
     // Time it takes for baddy to appear after the previous one
-    minDelay: 1000,
-    maxDelay: 5000,
+    minDelay: 50,
+    maxDelay: 3000,
 
     // Bounds on the baddies
     bounds: {
