@@ -29,9 +29,9 @@ export default class Hud extends Phaser.Scene {
         });
 
 
-        game.events.on('setLevel', n => {
+        /*game.events.on('setLevel', n => {
             this.levelText.text = 'Lvl: ' + n;
-        });
+        });*/
     }
 
 }
