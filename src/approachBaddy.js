@@ -3,7 +3,7 @@ import BasicBaddy from './basicBaddy';
 
 export default class ApproachBaddy extends BasicBaddy {
     constructor(scene, config) {
-        super(scene, config);
+        super(scene, config, 'follower');
         this.config = config;
         this.name = 'ApproachBaddy';
 

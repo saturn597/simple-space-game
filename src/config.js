@@ -8,7 +8,7 @@ export default {
 
     maxStarSpeed: 20,
     minStarSpeed: 10,
-    minStarSize: 1,
+    minStarSize: 2,
     maxStarSize: 3,
     numStars: 150,
 

@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 export default class SweepBaddy extends Phaser.GameObjects.PathFollower {
     constructor(scene, config) {
         const path = new Phaser.Curves.Path(config.x, 0);
-        super(scene, path, config.x, 0, 'ship');
+        super(scene, path, config.x, 0, 'sweeper');
 
         this.setOrigin(0.5, 1);
         this.flipY = false;
@@ -30,7 +30,6 @@ export default class SweepBaddy extends Phaser.GameObjects.PathFollower {
                 this.emit('escape');
                 this.destroy();
             },
-            rotationOffset: 90,
             rotateToPath: true,
         });
 

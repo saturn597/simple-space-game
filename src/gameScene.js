@@ -5,7 +5,10 @@ import generateLevel from './levelGenerator';
 import Player from './player';
 
 import bulletImage from './assets/bullet.png';
-import shipImage from './assets/ship.png';
+import dropperImage from './assets/dropper.png';
+import followerImage from './assets/follower.png';
+import playerImage from './assets/player.png';
+import sweeperImage from './assets/sweeper.png';
 
 
 export default class GameScene extends Phaser.Scene {
@@ -26,8 +29,11 @@ export default class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('ship', shipImage);
         this.load.image('bullet', bulletImage);
+        this.load.image('dropper', dropperImage);
+        this.load.image('follower', followerImage);
+        this.load.image('player', playerImage);
+        this.load.image('sweeper', sweeperImage);
     }
 
     create() {

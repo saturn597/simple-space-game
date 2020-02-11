@@ -8,7 +8,7 @@ export default class Player {
 
         const x = bounds.x + bounds.width / 2;
         const y = bounds.y + bounds.height / 2;
-        this.sprite = scene.physics.add.sprite(x, y, 'ship').
+        this.sprite = scene.physics.add.sprite(x, y, 'player').
             setCollideWorldBounds(true).
             setDrag(200);
         this.sprite.body.setBoundsRectangle(bounds);

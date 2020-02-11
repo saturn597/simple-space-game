@@ -18,7 +18,8 @@ export default class StarScene extends Phaser.Scene {
         for (let i = 0; i < Config.numStars; i++) {
             const x = Phaser.Math.RND.between(0, width);
             const y = Phaser.Math.RND.between(0, height);
-            const size = Phaser.Math.RND.between(0, Config.maxStarSize);
+            const size = Phaser.Math.RND.between(
+                Config.minStarSize, Config.maxStarSize);
 
             this.stars.push({
                 rect: this.add.rectangle(x, y, size, size, '0xffffff'),
