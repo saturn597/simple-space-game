@@ -69,10 +69,11 @@ export default class GameScene extends Phaser.Scene {
 
         this.baddies = this.physics.add.group();
 
-        // The default callback when something is added to a group resets a
-        // bunch of sprite values that we're setting in our baddy constructors,
-        // so don't want that.
-        this.baddies.createCallback = null;
+        // When members are added to a physics group, the group calls
+        // internalCreateCallback, which sets values to defaults.  We don't
+        // want any defaults set there, since it'd override values set in the
+        // baddy constructors.
+        this.baddies.internalCreateCallback = null;
 
         // run the update methods of baddies during updates
         this.baddies.runChildUpdate = true;

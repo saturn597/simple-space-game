@@ -7,7 +7,7 @@ export default class BasicBaddy extends Phaser.Physics.Arcade.Sprite {
 
         this.worldBounds = scene.physics.world.bounds;
 
-        this.originY = 1;  // If y is 0, start just above the screen
+        this.setOrigin(this.originX, 1);  // If y is 0, start just above the screen
 
         scene.physics.add.existing(this);  // must precede setVelocity
         this.setVelocityY(config.speed || 0);
@@ -18,6 +18,7 @@ export default class BasicBaddy extends Phaser.Physics.Arcade.Sprite {
     update() {
         if (this.body.top > this.worldBounds.bottom) {
             this.emit('escape');
+
             // NB: calling destroy removes us from our group automatically.
             this.destroy();
         }
