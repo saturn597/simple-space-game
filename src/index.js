@@ -13,7 +13,10 @@ import {
 } from './textScenes';
 
 const config = {
-    type: Phaser.AUTO,
+    // Had graphical glitches on rotated sprites with WebGL. Forcing Canvas for
+    // now. TODO: possibly investigate further.
+    type: Phaser.CANVAS,
+
     parent: 'game',
     physics: {
         default: 'arcade',
