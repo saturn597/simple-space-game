@@ -17,7 +17,7 @@ export default class BasicBaddy extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         if (this.body.top > this.worldBounds.bottom) {
-            this.emit('escape');
+            this.emit('explode', this.x, this.y);
 
             // NB: calling destroy removes us from our group automatically.
             this.destroy();

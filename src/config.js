@@ -2,6 +2,16 @@ export default {
     bulletMax: 3,
     bulletVelocity: 750,
 
+    explosionConfig: {
+        alpha: 0.1,
+        color: 0xffffff,
+        finalAlpha: 0.1,
+        outlineColor: 0xffffff,
+        outlineWeight: 4,
+        radius: 300,
+        speed: 0.2,
+    },
+
     playerAccel: 400,
     playerWorldFraction: 3/5,
     playerDrag: 200,

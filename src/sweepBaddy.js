@@ -6,7 +6,6 @@ export default class SweepBaddy extends Phaser.GameObjects.PathFollower {
         super(scene, path, config.x, 0, 'sweeper');
 
         this.setOrigin(0.5, 1);
-        this.flipY = false;
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
@@ -27,7 +26,6 @@ export default class SweepBaddy extends Phaser.GameObjects.PathFollower {
         this.startFollow({
             duration: 1000 * path.getLength() / config.speed,
             onComplete: () => {
-                this.emit('escape');
                 this.destroy();
             },
             rotateToPath: true,

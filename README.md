@@ -5,7 +5,8 @@ A simple space game using Phaser 3.
 Play it [here](https://saturn597.github.io/simple-space-game/).
 
 Move with arrow keys and fire with the space bar. Try to prevent the enemies
-from hitting you or reaching the bottom of the screen.
+from hitting you. Some enemies explode when they reach the bottom of the
+screen, so try to stop them from getting there!
 
 Based on the official [Phaser 3 project
 template](https://github.com/photonstorm/phaser3-project-template).

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import Config from './config';
+import Explosion from './explosion';
 import generateLevel from './levelGenerator';
 import Player from './player';
 
@@ -182,8 +183,15 @@ export default class GameScene extends Phaser.Scene {
             const addBaddy = () => {
                 const newBaddy = new item.type(this, item.config);
                 this.baddies.add(newBaddy);
-                newBaddy.on('escape', () => {
-                    this.damagePlayer();
+                newBaddy.on('explode', (x, y) => {
+                    new Explosion(
+                        this,
+                        x,
+                        y,
+                        this.player.sprite,
+                        () => this.damagePlayer(),
+                        Config.explosionConfig,
+                    );
                 });
                 newBaddy.on('destroy', () => {
                     baddiesLeft--;
