@@ -2,10 +2,20 @@ import Phaser from 'phaser';
 
 export default class SweepBaddy extends Phaser.GameObjects.PathFollower {
     constructor(scene, config) {
-        const path = new Phaser.Curves.Path(config.x, 0);
-        super(scene, path, config.x, 0, 'sweeper');
 
-        this.setOrigin(0.5, 1);
+        // Method for keeping us just out of view for our first frame.  Just
+        // setting our origin doesn't work because we rotate to the path
+        // direction when startFollow is called.  Instead, calculate the
+        // distance from sprite center to one corner of our sprite.  This will
+        // be the distance we need to maintain from the game arena so that we
+        // are completely outside it no matter what our angle.
+        const frame = scene.textures.get('sweeper').get(0);
+        const distance = Math.sqrt((frame.width / 2)**2 + (frame.height / 2)**2)
+        const startY = -distance;
+
+        const path = new Phaser.Curves.Path(config.x, startY);
+        super(scene, path, config.x, startY, 'sweeper');
+
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
