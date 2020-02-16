@@ -26,7 +26,7 @@ export default class GameScene extends Phaser.Scene {
         this.levelNumber = data.nextLevelNumber;
         this.level = this.levels[this.levelNumber];
         this.shields = data.shields;
-        this.ending = false;
+        this.endEvent = null;
     }
 
     preload() {
@@ -85,8 +85,10 @@ export default class GameScene extends Phaser.Scene {
             this.player.sprite,
             this.baddies,
             (playerSprite, baddySprite) => {
-                baddySprite.destroy();
+                // Damage player FIRST, since they should lose if they run out
+                // of shields.
                 this.damagePlayer();
+                baddySprite.destroy();
             }
         );
 
@@ -128,32 +130,43 @@ export default class GameScene extends Phaser.Scene {
     }
 
     endLevel() {
-        if (this.ending) {
-            // The end of the scene could be triggered by more than one thing
-            // at the same time. For example, the last baddy is destroyed by
-            // colliding with the player, simultaneously reducing shields to 0.
-            // Avoid letting our callback get called more than once.
+        if (this.endEvent && this.shields > 0) {
+            // This means we're already ending the level, and we still have
+            // shields.  No changes needed.
             return;
         }
-        this.ending = true;
+
+        if (this.endEvent && this.nextScene === 'gameOverScene') {
+            // Also, no changes needed if a loss ending is already in process.
+            return;
+        }
 
         const levelsLeft = this.levels.length - this.levelNumber - 1;
         const nextLevelNumber = levelsLeft ? this.levelNumber + 1 : 0;
 
-        let delay, nextScene;
+        let delay;
+
         if (this.shields <= 0) {
+            // We've run out of shields, so should lose.
+            if (this.endEvent) {
+                // If we make it here, there's a victory ending in process, but
+                // the loss should override it. Stop the existing end event.
+                this.endEvent.remove();
+            }
             delay = Config.lossDelay;
-            nextScene = 'gameOverScene';
+            this.nextScene = 'gameOverScene';
         } else {
+            // If the level is ending and we haven't run out of shields, then
+            // that's a victory. Complete the level or complete the game.
             delay = Config.levelCompletionDelay;
-            nextScene = levelsLeft ? 'levelEndScene' : 'endScene';
+            this.nextScene = levelsLeft ? 'levelEndScene' : 'endScene';
         }
 
         const startNextScene = () => {
             const shields = levelsLeft ? this.shields : 0;
 
             this.scene.start(
-                nextScene,
+                this.nextScene,
                 {
                     nextLevelNumber,
                     shields,
@@ -161,7 +174,7 @@ export default class GameScene extends Phaser.Scene {
             );
         };
 
-        this.time.addEvent({
+        this.endEvent = this.time.addEvent({
             delay,
             callback: startNextScene,
         });
