@@ -12,9 +12,10 @@ export default {
         speed: 0.2,
     },
 
-    playerAccel: 400,
+    playerAccel: 1000,
+    playerDrag: 500,
+    playerMaxVelocity: 300,
     playerWorldFraction: 3/5,
-    playerDrag: 200,
 
     maxStarSpeed: 20,
     minStarSpeed: 10,

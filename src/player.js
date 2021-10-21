@@ -10,7 +10,7 @@ export default class Player {
         const y = bounds.y + bounds.height / 2;
         this.sprite = scene.physics.add.sprite(x, y, 'player').
             setCollideWorldBounds(true).
-            setDrag(200);
+            setDrag(Config.playerDrag);
         this.sprite.body.setBoundsRectangle(bounds);
 
         this.graphics = this.scene.add.graphics();
@@ -51,6 +51,7 @@ export default class Player {
             this.sprite.setAccelerationY(accel);
         }
         this.sprite.body.acceleration.normalize().scale(accel);
+        this.sprite.body.velocity.limit(Config.playerMaxVelocity);
 
         this.graphics.clear();
         this.graphics.lineStyle(2, 0xffffff, this.alpha);
