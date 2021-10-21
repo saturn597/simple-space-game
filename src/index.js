@@ -26,6 +26,9 @@ const config = {
     },
     width: Config.gameWidth,
     height: Config.gameHeight,
+    scale: {
+      mode: Phaser.Scale.FIT,
+    },
     scene: [
         TitleScene,
         HudScene,
