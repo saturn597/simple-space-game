@@ -34,6 +34,7 @@ class BaseScene extends Phaser.Scene {
 
         const callback = () => {
             this.textObj.text = this.text2;
+            this.input.keyboard.addCapture('SPACE');
             this.input.keyboard.once('keyup-SPACE', () => {
                 this.scene.start(
                     this.nextScene,
