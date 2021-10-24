@@ -25,67 +25,77 @@ class BaseScene extends Phaser.Scene {
             }
         ).setOrigin(0.5);
 
+        this.textObj.text = this.text;
         this.setup();
-        this.events.on('wake', this.setup, this);
     }
 
     setup() {
-        this.textObj.text = this.text;
+        this.startNextScene();
+    }
 
-        const callback = () => {
-            this.textObj.text = this.text2;
-            this.input.keyboard.addCapture('SPACE');
-            this.input.keyboard.once('keyup-SPACE', () => {
-                this.scene.start(
-                    this.nextScene,
-                    {
-                        nextLevelNumber: this.nextLevelNumber,
-                        shields: this.shields,
-                    }
-                );
-            });
-        };
+    startNextScene() {
+        this.scene.start(this.nextScene,
+            {
+                nextLevelNumber: this.nextLevelNumber,
+                shields: this.shields,
+            }
+        );
+    }
+}
 
+class DelayScene extends BaseScene {
+    constructor(key, text, delayTime, nextScene) {
+        super(key);
+
+        this.text = text;
+        this.delayTime = delayTime;
+        this.nextScene = nextScene;
+    }
+
+    setup() {
         this.time.addEvent({
-            callback,
-            delay: 2000,
+            callback: this.startNextScene.bind(this),
+            delay: this.delayTime,
         });
     }
 }
 
-class EndScene extends BaseScene {
-    constructor() {
-        super('endScene');
-        this.text = 'You Win!';
-        this.text2 = 'Space to continue';
-        this.nextScene = 'titleScene';
+class PressSpaceScene extends BaseScene {
+    constructor(key, text, nextScene) {
+        super(key);
+
+        this.text = text;
+        this.nextScene = nextScene;
+    }
+
+    setup() {
+        this.input.keyboard.addCapture('SPACE');
+        this.input.keyboard.once('keyup-SPACE',
+            this.startNextScene.bind(this));
     }
 }
 
-class LevelEndScene extends BaseScene {
+class EndScene extends DelayScene {
     constructor() {
-        super('levelEndScene');
-        this.text = 'Level Complete';
-        this.text2 = 'Space for next level';
-        this.nextScene = 'gameScene';
+        super('endScene', 'You Win!', 2000, 'titleScene');
     }
 }
 
-class TitleScene extends BaseScene {
+class LevelEndScene extends DelayScene {
     constructor() {
-        super('titleScene');
-        this.text = 'Space Game';
-        this.text2 = 'Space to start';
-        this.nextScene = 'gameScene';
+        super('levelEndScene', 'Level Complete', 2000, 'gameScene');
     }
 }
 
-class GameOverScene extends BaseScene {
+class TitleScene extends PressSpaceScene {
     constructor() {
-        super('gameOverScene');
-        this.text = 'Game over!';
-        this.text2 = 'Space to continue';
-        this.nextScene = 'titleScene';
+        super('titleScene', 'Space to start', 'gameScene');
+    }
+}
+
+class GameOverScene extends DelayScene {
+    constructor() {
+        super('gameOverScene', 'Game over!', 2000, 'titleScene');
     }
 }
 
