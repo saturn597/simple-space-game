@@ -31,9 +31,9 @@ const config = {
     },
     scene: [
         TitleScene,
-        HudScene,
         StarScene,
         GameScene,
+        HudScene,
         LevelEndScene,
         GameOverScene,
         EndScene,

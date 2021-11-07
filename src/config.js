@@ -31,4 +31,8 @@ export default {
 
     gameWidth: 360,
     gameHeight: 640,
+
+    borderWidth: 2,
+    hudHeight: 35,
+
 };
